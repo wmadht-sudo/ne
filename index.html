@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق المنظفات الاحترافي</title>
+    <!-- خطوط وجداول أيقونات حديثة -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-frame">
+        <!-- الشاشة الافتتاحية -->
+        <div class="splash-screen" id="splashScreen" onclick="playWaterSound()">
+            <div class="logo-wrapper">
+                <div class="glow-ring"></div>
+                <svg class="splash-logo" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 20 L160 50 V110 C160 150 100 180 100 180 C100 180 40 150 40 110 V50 L100 20 Z" fill="url(#grad1)" stroke="#38bdf8" stroke-width="3"/>
+                    <path d="M100 60 C80 90 60 100 60 120 C60 142 78 160 100 160 C122 160 140 142 140 120 C140 100 120 90 100 60 Z" fill="url(#grad2)"/>
+                    <circle cx="90" cy="110" r="8" fill="white" opacity="0.8"/>
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0284c7" />
+                            <stop offset="100%" stop-color="#092635" />
+                        </linearGradient>
+                        <linearGradient id="grad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#38bdf8" />
+                            <stop offset="100%" stop-color="#0284c7" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <h1 class="splash-title">منظفاتي <span class="badge-pro">PRO</span></h1>
+            <p class="splash-subtitle">منظومة تصنيع وحسابات المنظفات الذكية</p>
+        </div>
+
+        <!-- الهيدر العلوي -->
+        <header class="app-header">
+            <button class="icon-btn" id="backBtn" onclick="goToMain()"><i class="fa-solid fa-arrow-right"></i></button>
+            <div class="header-title">
+                <h2 id="headerTitle">منظفاتي Pro</h2>
+                <span class="online-status"><span class="pulse-dot"></span> جاهز للعمل</span>
+            </div>
+            <button class="icon-btn pulse-icon" onclick="playWaterSound()"><i class="fa-solid fa-droplet"></i></button>
+        </header>
+
+        <!-- محتوى الشاشات -->
+        <main class="content">
+
+            <!-- الشاشة الرئيسية -->
+            <section id="mainScreen" class="screen active">
+                
+                <div class="welcome-banner">
+                    <div class="banner-text">
+                        <h3>أهلاً بك في معامل الانتاج</h3>
+                        <p>اختر إجراءً لبدء ضبط الجرعات والتكلفة</p>
+                    </div>
+                </div>
+
+                <div class="section-label">الخيارات السريعة</div>
+
+                <div class="grid-menu">
+                    <div class="menu-card" onclick="openScreen('addRawScreen', 'إدارة المواد الخام')">
+                        <div class="menu-icon icon-cyan"><i class="fa-solid fa-flask-vial"></i></div>
+                        <div class="menu-text">
+                            <h3>المواد الخام</h3>
+                            <p>إضافة الأسعار والخامات</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
+                    </div>
+
+                    <div class="menu-card" onclick="openScreen('addProductScreen', 'تركيب خلطة جديدة')">
+                        <div class="menu-icon icon-blue"><i class="fa-solid fa-square-plus"></i></div>
+                        <div class="menu-text">
+                            <h3>إنشاء خلطة مرجعية</h3>
+                            <p>تصميم تركيبات المعمل</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
+                    </div>
+
+                    <div class="menu-card highlight-card" onclick="openScreen('manufactureScreen', 'معايرة الوجبة')">
+                        <div class="menu-icon icon-emerald"><i class="fa-solid fa-calculator"></i></div>
+                        <div class="menu-text">
+                            <h3>حساب وجبة تصنيع</h3>
+                            <p>حساب مقادير وتكلفة حجم معين</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
+                    </div>
+                </div>
+
+                <!-- قسم الخلطات المحفوظة -->
+                <div class="section-header-flex">
+                    <div class="section-label">الخلطات والتركيبات المحفوظة</div>
+                    <span class="count-badge" id="productCount">0 خلطة</span>
+                </div>
+
+                <div class="saved-recipes-container" id="savedRecipesList"></div>
+
+            </section>
+
+            <!-- شاشة إضافة مادة خام -->
+            <section id="addRawScreen" class="screen">
+                <div class="glass-card">
+                    <form id="rawForm" onsubmit="saveRawMaterial(event)">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-tag"></i> اسم المادة الخام</label>
+                            <input type="text" id="rawName" class="form-control" placeholder="مثال: سلفونيك، صودا سائلة، تكسابون" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-coins"></i> سعر الكيلوجرام (جنيه)</label>
+                            <input type="number" step="0.01" id="rawPrice" class="form-control" placeholder="0.00" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus-circle"></i> حفظ الخامة</button>
+                    </form>
+                </div>
+
+                <div class="section-label" style="margin-top:20px;">المواد الخام في المستودع</div>
+                <div class="custom-list" id="rawMaterialsList"></div>
+            </section>
+
+            <!-- شاشة إنشاء خلطة -->
+            <section id="addProductScreen" class="screen">
+                <div class="glass-card">
+                    <form id="productForm" onsubmit="saveProduct(event)">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-bottle-water"></i> اسم المنتج / الخلطة</label>
+                            <input type="text" id="productName" class="form-control" placeholder="مثال: صابون سائل سوبر" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-boxes-stacked"></i> الحجم المرجعي للخلطة (باللتر)</label>
+                            <input type="number" id="baseVolume" class="form-control" value="1000" required>
+                        </div>
+
+                        <div class="section-label-inner" style="margin: 15px 0 10px 0; font-size:12px; color:var(--text-muted); font-weight:bold;">مكونات الخلطة الأساسية</div>
+                        <div id="rawRowsContainer"></div>
+
+                        <button type="button" class="btn btn-secondary" onclick="addRawRowToProduct()">
+                            <i class="fa-solid fa-plus"></i> إضافة عنصر للتركيبة
+                        </button>
+
+                        <button type="submit" class="btn btn-success" style="margin-top:15px;">
+                            <i class="fa-solid fa-floppy-disk"></i> اعتماد الخلطة المحفوظة
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- شاشة حساب تصنيع وجبة -->
+            <section id="manufactureScreen" class="screen">
+                <div class="glass-card">
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-list-check"></i> اختر الخلطة المحفوظة</label>
+                        <select id="selectProduct" class="form-control" onchange="calculateBatch()"></select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-scale-balanced"></i> الكمية المطلوبة تصنيعها (باللتر)</label>
+                        <input type="number" id="targetVolume" class="form-control" placeholder="أدخل الكمية (مثال: 120 أو 500)" oninput="calculateBatch()">
+                    </div>
+                    
+                    <!-- خانة تدوين الملاحظات -->
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-pen-to-square"></i> ملاحظات التصنيع والتشغيل</label>
+                        <textarea id="batchNotes" class="form-control" rows="3" placeholder="مثال: ضبط الـ pH عند 7، إضافة معطر الليمون بعد التبريد..." oninput="calculateBatch()"></textarea>
+                    </div>
+                </div>
+
+                <div id="calculationResult"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
